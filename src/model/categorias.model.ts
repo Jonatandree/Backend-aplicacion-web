@@ -4,7 +4,7 @@ var codigo= new mongoose.Types.ObjectId();
 export interface Categoria {
     nombreCategorias: string;
     imagenCategoria:  string;
-    
+    empresas?:         Array<Empresa>;
 }
 
 export interface Empresa {
@@ -15,7 +15,7 @@ export interface Empresa {
     calificacion:       number;
     banner:             string;
     coordenadasEmpresa: Array<CoordenadasEmpresa>;
-    productos:          Array<Producto>;
+    productos?:          Array<Producto>;
 }
 
 export interface CoordenadasEmpresa {
@@ -24,6 +24,7 @@ export interface CoordenadasEmpresa {
 }
 
 export interface Producto {
+    _id: mongoose.Types.ObjectId,
     nombreProducto:      string;
     imagenProducto:      string;
     descripcionProducto: string;

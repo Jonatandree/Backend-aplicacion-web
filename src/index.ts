@@ -2,7 +2,7 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import { Database } from "./utils/database";
 import categoriasRouter from "./routers/categorias.router";
-import empresasRouter from "./routers/empresas.router";
+
 
 
 dotenv.config();
@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true})); 
 
 app.use('/categorias',categoriasRouter);
-app.use('/empresas',empresasRouter )
+
 app.listen(port, () => {
 	console.log(`Servidor iniciado man https://localhost:${port}`);
 });
