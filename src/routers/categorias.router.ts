@@ -1,6 +1,6 @@
 //aqui va las rutas
 import express from "express";
-import { agregarCategoria, getCategorias, obtenerCategoria } from "../controllers/categoria.control";
+import { actualizarCategoria, agregarCategoria, eliminarCategoria, getCategorias, obtenerCategoria } from "../controllers/categoria.control";
 
 const router = express.Router();
 
@@ -11,5 +11,6 @@ const router = express.Router();
 router.get("/", getCategorias);
 router.get('/:_id', obtenerCategoria);
 router.post('/', agregarCategoria);
-
+router.put('/:_id', actualizarCategoria );
+router.delete('/:_id',eliminarCategoria);
 export default router;

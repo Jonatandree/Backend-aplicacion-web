@@ -37,3 +37,27 @@ export const agregarCategoria = (req:Request, res:Response) => {
 		res.end();
 	});
 };
+
+export const actualizarCategoria =(req:Request, res:Response)=>{
+	CategoriaSchema.updateOne({id:req.params._id}, {
+		nombreCategorias: req.body.nombreCategorias,
+		imagenCategoria:  req.body.imagenCategoria,
+		empresas:		req.body.empresas
+	}).then(actualizar=> {
+		res.send({message:'Categoria actualizada', actualizar});
+		res.end();
+	})
+}
+
+export const eliminarCategoria =(req:Request,res:Response)=>{
+	CategoriaSchema.remove({_id:req.params._id})
+	.then(removerCategoria => {
+		res.send({message:'Registro eliminado', removerCategoria});
+		res.end();
+	}).catch(error=>{
+		res.send({message:'Hubo un error al guardar',error});
+		res.end();
+	})	
+
+
+}
