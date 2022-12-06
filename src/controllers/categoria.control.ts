@@ -1,10 +1,10 @@
 //aqui va el primer control
-import { Request, response, Response } from "express";
-
+import { Request,  Response } from "express";
 import { CategoriaSchema } from "../model/categorias.schema";
+import mongoose from "mongoose";
 
 
-//Obtener categorias
+//CRUD de categorias
 export const getCategorias = (req: Request, res: Response) => {
 	CategoriaSchema.find({},{empresas:false}).limit(20)
 		.then((result) => {
@@ -37,3 +37,90 @@ export const agregarCategoria = (req:Request, res:Response) => {
 		res.end();
 	});
 };
+
+
+
+//CRUD de empresas
+
+export const obtenerEmpresas = (req: Request, res: Response) => {
+	CategoriaSchema.find({_id:req.params._id},{empresas:true ,_id:false}).limit(20)
+		.then((result) => {
+			res.send(result[0]);
+			res.end();
+		})
+		.catch((error) => console.error(error));
+};
+
+export const obtenerEmpresa =(req:Request, res:Response)=> {
+
+	CategoriaSchema.find({	
+		'_id':req.params._id,
+		'empresas._id': (req.params._id)
+	},
+	{"empresas.$":true})
+	.then((result) => {
+		res.send({message:'hola', result});
+		res.end();
+	})
+	.catch((error) => console.error(error));
+
+
+
+};
+
+export const agregarEmpresa = (req:Request,res:Response) => {
+CategoriaSchema.updateOne({_id: req.params._id},
+	{
+		$push:{
+			empresas:{
+				_id: new mongoose.Types.ObjectId(req.body._id),  
+				nombreEmpresa: req.body.nombreEmpresa,
+				imagenEmpresa: req.body.imagenEmpresa,
+				descripcion:req.body.descripcion,			   
+				calificacion: req.body.calificacion,
+				banner:  req.body.banner,
+				coordenadasEmpresa: req.body.coordenadasEmpresa,
+				productos: req.body.productos
+
+			}
+		}
+	}
+	).then(result =>{
+		res.send({message:'Empresa agregada', result});
+		res.end();
+	}).catch(error => {
+		res.send({message:'error empresa', error});
+		res.end();
+	})
+
+};
+
+export const actualizarEmpresa = (req:Request,res:Response) =>{
+
+}
+
+
+
+export const actualizarCategoria =(req:Request, res:Response)=>{
+	CategoriaSchema.updateOne({id:req.params._id}, {
+		nombreCategorias: req.body.nombreCategorias,
+		imagenCategoria:  req.body.imagenCategoria,
+		empresas:		req.body.empresas
+	}).then(actualizar=> {
+		res.send({message:'Categoria actualizada', actualizar});
+		res.end();
+	})
+}
+
+export const eliminarCategoria =(req:Request,res:Response)=>{
+	CategoriaSchema.remove({_id:req.params._id})
+	.then(removerCategoria => {
+		res.send({message:'Registro eliminado', removerCategoria});
+		res.end();
+	}).catch(error=>{
+		res.send({message:'Hubo un error al guardar',error});
+		res.end();
+	})	
+
+
+}
