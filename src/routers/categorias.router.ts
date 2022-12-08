@@ -1,6 +1,6 @@
 //aqui va las rutas
 import express from "express";
-import { actualizarCategoria, agregarCategoria, agregarEmpresa, eliminarCategoria, getCategorias, obtenerCategoria, obtenerEmpresa, obtenerEmpresas } from "../controllers/categoria.control";
+import { actualizarCategoria, actualizarEmpresa, agregarCategoria, agregarEmpresa, eliminarCategoria, eliminarEmpresa, getCategorias, obtenerCategoria, obtenerEmpresa, obtenerEmpresas } from "../controllers/categoria.control";
 
 const router = express.Router();
 
@@ -18,6 +18,9 @@ router.delete('/:_id',eliminarCategoria);
 
 //rutas de empresas
 router.get("/:_id/empresas", obtenerEmpresas);
-router.get("/:_id/empresas/:_id", obtenerEmpresa);
+router.get("/:_id/empresas/:nombreEmpresa", obtenerEmpresa);
 router.post("/:_id/empresas", agregarEmpresa)
+router.put("/:_id/empresas/:nombreEmpresa", actualizarEmpresa);
+router.delete('/:_id/empresas/:nombreEmpresa',eliminarEmpresa);
+
 export default router;
