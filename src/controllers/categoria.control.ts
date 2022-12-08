@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 //CRUD de categorias
 export const getCategorias = (req: Request, res: Response) => {
-	CategoriaSchema.find({},{empresas:false}).limit(20)
+	CategoriaSchema.find({}).limit(20)
 		.then((result) => {
 			res.send(result);
 			res.end();
@@ -76,13 +76,13 @@ export const obtenerEmpresas = (req: Request, res: Response) => {
 
 export const obtenerEmpresa =(req:Request, res:Response)=> {
 
-	CategoriaSchema.find({	
-		'_id':req.params._id,
-		'empresas._id': (req.params._id)
+	CategoriaSchema.findOne({	
+		_id:req.params._id,
+		'empresas.nombreEmpresa': req.params.nombreEmpresa
 	},
-	{"empresas.$":true})
+	{"empresas.$":true, _id:false})
 	.then((result) => {
-		res.send({message:'hola', result});
+		res.send(result);
 		res.end();
 	})
 	.catch((error) => console.error(error));
@@ -119,5 +119,45 @@ CategoriaSchema.updateOne({_id: req.params._id},
 };
 
 export const actualizarEmpresa = (req:Request,res:Response) =>{
+	CategoriaSchema.findOneAndUpdate({
+		id:req.params._id,
+		'empresas.nombreEmpresa': req.params.nombreEmpresa
+	}, {
+		"empresas.$._id":	 			req.body._id,	
+		"empresas.$.nombreEmpresa": 	req.body.nombreEmpresa,      
+		"empresas.$.imagenEmpresa":  	req.body.imagenEmpresa,
+		"empresas.$.calificacion":   	req.body.calificacion,    
+		"empresas.$.banner":       		req.body.banner,  
+		"empresas.$.coordenadasEmpresa":req.body.coordenadasEmpresa,
+		"empresas.$.productos":      	req.body.productos   
+	}
+).then(actualizar => {
+		res.send({message:'Empresa actualizada', actualizar});
+		res.end();
+	})
+};
 
-}
+
+export const eliminarEmpresa =(req:Request,res:Response)=>{
+	CategoriaSchema.findOneAndDelete({
+		_id:req.params._id,
+		'empresas.nombreEmpresa': req.params.nombreEmpresa
+	} ,{
+/*$pull:{
+		"empresas.$._id":	 			req.body._id,	
+		"empresas.$.nombreEmpresa": 	req.body.nombreEmpresa,      
+		"empresas.$.imagenEmpresa":  	req.body.imagenEmpresa,
+		"empresas.$.calificacion":   	req.body.calificacion,    
+		"empresas.$.banner":       		req.body.banner,  
+		"empresas.$.coordenadasEmpresa":req.body.coordenadasEmpresa,
+		"empresas.$.productos":      	req.body.productos
+		} 
+	*/})
+	.then(removerCategoria => {
+		res.send({message:'Registro eliminado', removerCategoria});
+		res.end();
+	}).catch(error=>{
+		res.send({message:'Hubo un error al guardar',error});
+		res.end();
+	})	
+};
