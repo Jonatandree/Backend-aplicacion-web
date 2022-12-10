@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
-import { Usuario } from "./usuario.model";
+import { Usuario, Orden } from "./usuario.model";
 import bcrypt from 'bcrypt';
  
 
 const schema= new mongoose.Schema<Usuario>({
-    usuario: String,
+    nombre: String,
     email: String,
     password:String,
-    telefono:Number
-
+    telefono:Number,
+    ordenes:mongoose.Types.ObjectId,
+    estadosOrdenes: String,
 });
 
 schema.methods.encriptarContraUsuario = async(password: string): Promise<string> =>{

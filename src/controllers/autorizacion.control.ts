@@ -19,10 +19,12 @@ res.json({token: token});
 
 export const registro = async (req:Request, res:Response) =>{
     const p = new UsuarioSchema({
-        usuario: req.body.usuario,
+        nombre: req.body.usuario,
         email: req.body.email,
         password:req.body.password,
-        telefono:req.body.telefono
+        telefono:req.body.telefono,
+		ordenes:req.body.ordenes,
+		estadosOrdenes:req.body.estadosOrdenes
 	});
 	p.password= await p.encriptarContraUsuario(p.password)
 	const result= await p.save();
