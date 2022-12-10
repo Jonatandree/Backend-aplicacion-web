@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 //CRUD de categorias
 export const getCategorias = (req: Request, res: Response) => {
-	CategoriaSchema.find({}).limit(20)
+	CategoriaSchema.find({},{empresas:false}).limit(20)
 		.then((result) => {
 			res.send(result);
 			res.end();
@@ -161,3 +161,5 @@ export const eliminarEmpresa =(req:Request,res:Response)=>{
 		res.end();
 	})	
 };
+
+//CRUD productos
